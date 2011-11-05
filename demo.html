@@ -1,0 +1,54 @@
+<html><head>
+
+<script type="text/javascript" src="../../src/webglu.js"></script>
+<script type="text/javascript" src="glut.js"></script>
+<script type="application/x-javascript">
+
+function init() {
+
+    //--Initialize WebGLU, shaders
+    glutInit();
+    glutInitWindowSize(400, 400);
+    $W.GL.clearColor(0.9, 0.9, 0.9, 1.0);
+    $W.camera.setPosition(2,2,3);
+	
+    return true;
+}
+function render() {
+	 glBegin($W.GL.TRIANGLES);
+                 glVertex3f(-0.5,-0.5,0.0);
+                 glVertex3f(0.5,0.0,0.0);
+                 glVertex3f(0.0,0.5,0.0);
+         glEnd();
+
+}
+
+function start() {
+       
+	 init(); 
+	 glutDisplayFunc(render);
+         $W.update = function() {
+                document.getElementById('overlay').innerHTML = $W.FPS;
+
+         };
+         $W.start()
+        
+}
+
+</script>
+
+</head>
+
+<body onload='start()'>
+
+
+<div id="glCanvas">
+
+<div id="overlay"></div>
+
+<canvas id='canvas' width='500' height='500'></canvas><br>
+</div>
+
+</body>
+</html>
+

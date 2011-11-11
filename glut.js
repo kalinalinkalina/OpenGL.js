@@ -1,4 +1,4 @@
-/* The following code contains glutInitDisplayMode, glutDisplayFunc, glClearColor,
+/* The following code contains glutDisplayFunc, glClearColor,
  * gluLookAt, glBegin, glEnd, glVertex3f, glutInitWindowSize, glutInit.
  * This is a first time implement and the inside of the function will probably be changed
  * later. To see how to use them, please take a look at demo.html.
@@ -25,19 +25,19 @@ __glutDisplayMode = GLUT_RGB | GLUT_SINGLE | GLUT_DEPTH;
 
 
 /** OpenGL functions */
-glutInitDisplayMode = function(mode) {
+function glutInitDisplayMode(mode) {
 	__glutDisplayMode = mode; //This doesnt do anything yet.
 }
 
-glutDisplayFunc = function(callback) {
+function glutDisplayFunc(callback) {
 	callback();
 }
 
-glClearColor = function (red, green, blue, alpha){
+function glClearColor(red, green, blue, alpha){
 	$W.GL.clearColor(red, green, blue, alpha);
 }
 
-gluLookAt = function(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ) {
+function gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ) {
 	$W.camera.setPosition(eyeX, eyeY, eyeZ);
 	$W.camera.setTarget(centerX, centerY, centerZ);
 	$W.camera.up = $V([upX, upY, upZ]);

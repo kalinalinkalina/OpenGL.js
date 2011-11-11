@@ -1,5 +1,5 @@
-/* The following code contains glBegin, glEnd, glVertex3f, 
- * glutDisplayFunc, glutInitWindowSize, glutInit.
+/* The following code contains glutInitDisplayMode, glutDisplayFunc, glClearColor,
+ * gluLookAt, glBegin, glEnd, glVertex3f, glutInitWindowSize, glutInit.
  * This is a first time implement and the inside of the function will probably be changed
  * later. To see how to use them, please take a look at demo.html.
  */
@@ -43,6 +43,19 @@ gluLookAt = function(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ)
 	$W.camera.up = $V([upX, upY, upZ]);
 }
 
+function glutInitWindowSize(width, height)
+{
+	document.getElementById("canvas").style.width=width;
+	document.getElementById("canvas").style.height=height; 
+}
+
+function glutInit()
+{
+	if (!$W.initialize()) 
+	{return false;}
+	return true;	
+}
+
 function glBegin(model)
 {
 	$W.pipeline_state = model;
@@ -70,28 +83,15 @@ function glEnd()
 	 vertex_data = [];
 	 vertex_data.push("vertex");
 	 vertex_data.push($W.pipeline_vertex);
-	 
+
 	 color_data = [];
 	 color_data.push("color");
 	 color_data.push($W.pipeline_color);
-	 
+
 	 index_data = [];
 	 index_data.push('wglu_elements');
 	 index_data.push($W.pipeline_index);
-	
+
 	 DATA.push(vertex_data,color_data,index_data);
 	 $W.createObject({type:$W.pipeline_state, data:DATA});
-}
-
-function glutInitWindowSize(width, height)
-{
-	document.getElementById("canvas").style.width=width;
-	document.getElementById("canvas").style.height=height; 
-}
-
-function glutInit()
-{
-	if (!$W.initialize()) 
-	{return false;}
-	return true;	
 }

@@ -1,1 +1,11 @@
 3D Javascript Engine using OpenGL
+
+We currently have the following functions:
+-glutDisplayFunc
+-glClearColor
+-gluLookAt
+-glutInitWindowSize
+-glutInit
+-glBegin
+-glEnd
+-glVertex3f

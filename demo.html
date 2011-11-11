@@ -6,11 +6,11 @@
 
 function init() {
 
-    //--Initialize WebGLU, shaders
+    //--Initialize WebGLU
     glutInit();
     glutInitWindowSize(400, 400);
-    $W.GL.clearColor(0.9, 0.9, 0.9, 1.0);
-    $W.camera.setPosition(2,2,3);
+    glclearColor(0.9, 0.9, 0.9, 1.0);
+    gluLookAt(2,2,3, 0,0,0, 0,1,0);
 	
     return true;
 }

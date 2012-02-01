@@ -1,5 +1,7 @@
 var GL_MODELVIEW = 0;
-var GL_PERPECTIVE = 1;
+var GL_PROJECTION = 1;
+var GL_TEXTURE = 2;
+var GL_COLOR = 4;
 
 function glMatrixMode(mode)
 {

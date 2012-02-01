@@ -1,0 +1,3 @@
+function glFog(pname,param){
+
+}

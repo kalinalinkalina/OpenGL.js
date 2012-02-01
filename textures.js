@@ -166,7 +166,7 @@ function glDisable(cap)
 
 function glFinish()
 {
-        finsih();
+        finish();
 }
 
 

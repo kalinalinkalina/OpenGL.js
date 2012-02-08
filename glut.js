@@ -30,3 +30,10 @@ function glutInitWindowSize(width, height)
 	document.getElementById("canvas").style.width=width;
 	document.getElementById("canvas").style.height=height; 
 }
+
+function glutInit()
+{
+	if (!$W.initialize()) 
+	{return false;}
+	return true;	
+}

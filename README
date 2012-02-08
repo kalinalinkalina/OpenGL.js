@@ -14,9 +14,6 @@ glBegin
 glEnd
 glVertex3f
 
-
-To be tested:
-
 glActiveTexture
 glBindTexture
 glCopyTexImage2D

@@ -1,10 +1,3 @@
-function glutInit()
-{
-	if (!$W.initialize()) 
-	{return false;}
-	return true;	
-}
-
 gluLookAt = function(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ) {
 	$W.camera.setPosition(eyeX, eyeY, eyeZ);
 	$W.camera.setTarget(centerX, centerY, centerZ);

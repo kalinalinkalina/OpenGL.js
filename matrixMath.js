@@ -92,9 +92,6 @@ function make4x4(matrix){
 	if (matrix.length==16)
 		return matrix;
 
-	if (matrix.length>16)
-		return null;
-
 	//if it is a vector of [x,y,z]
 	if (matrix.length==3)
 		return [1,0,0,matrix[0], 0,1,0,matrix[1], 0,0,1,matrix[2], 0,0,0,1];
@@ -110,6 +107,9 @@ function make4x4(matrix){
 			 0,         0,         1, 0,
 			 matrix[6], matrix[7], 0, matrix[8] ];
 	}
+
+	else //if(matrix.length>16)
+		return null;
 
 }
 

@@ -25,7 +25,6 @@ Also, splice() can be used to make a shallow copy*/
 function copyMatrix(from, to){
 	for(var i=0; i<from.length; i++)
 		to[i] = from[i];
-
 }
 
 /*Transposes the given matrix*/
@@ -34,7 +33,6 @@ function transposeMatrix(matrix){
 		matrix[1], matrix[5], matrix[9], matrix[13],
 		matrix[2], matrix[6], matrix[10], matrix[14],
 		matrix[3], matrix[7], matrix[11], matrix[15]];
-
 }
 
 
@@ -87,6 +85,11 @@ function inverse(m){
         	result[i] = inv[i] * det;
 }
 
+/*Loads a 4x4 identity matrix*/
+function loadIdentity(location){
+	location = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1];
+}
+
 /*Changes the input vector or 3x3 matrix into a 4x4 matrix*/
 function make4x4(matrix){
 	if (matrix.length==16)
@@ -110,10 +113,20 @@ function make4x4(matrix){
 
 	else //if(matrix.length>16)
 		return null;
-
 }
 
-/*Loads the identity matrix into the specified location*/
-function loadIdentity(location){
-	location = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1];
+//to use for scale
+function makeDiagonal(vector){
+	if(vector.lenth==4){
+		var M = new Array(16);
+		loadIdentity(M);
+
+		M[0] = vector[0];
+		M[5] = vector[1];
+		M[10] = vector[2];
+		M[15] = vector[3];
+
+		return M;
+	}
+	else return null;
 }

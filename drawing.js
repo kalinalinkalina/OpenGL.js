@@ -1,3 +1,9 @@
+$W.Object = function(){
+	this.draw = function(){
+		//draw object and its internally stored position, rotation, and scale
+	}
+}
+
 $W.Timer = function () {
 	this.age = 0;
 	this.currTime = (new Date()).getTime();
@@ -10,7 +16,7 @@ $W.Timer = function () {
 		this.deltaTime = this.currTime - this.prevTime;
 		this.prevTime = this.currTime;
 		this.age += this.deltaTime;
-		//this.updateFPSCount
+		//update FPS count
 	}
 }
 
@@ -23,8 +29,7 @@ $W.Camera = function() {
 	}
 }
 
-
-function startDrawing(){
+function start(){
         // use mozRequestAnimationFrame if available
         if (typeof(window.mozRequestAnimationFrame) != 'undefined') {
             var redraw = function $W_mozRedraw() {

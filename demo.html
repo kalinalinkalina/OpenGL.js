@@ -2,27 +2,76 @@
 
 <html><head>
 
-<script type="text/javascript" src="../WebGLU/src/webglu.js"></script>
+<script type="text/javascript" src="../../src/webglu.js"></script>
 <script type="text/javascript" src="glut.js"></script>
+<script type="text/javascript" src="Mat4.js"></script>
+<script type="text/javascript" src="Vec3.js"></script>
+<script type="text/javascript" src="Vec4.js"></script>
+<script type="text/javascript" src="matrixMath.js"></script>
+<script type="text/javascript" src="glCoordinateTransformation.js"></script>
 <script type="application/x-javascript">
-
 function init() {
 
     //--Initialize WebGLU
     glutInit();
     glutInitWindowSize(400, 400);
-    glclearColor(0.9, 0.9, 0.9, 1.0);
-    gluLookAt(2,2,3, 0,0,0, 0,1,0);
-	
+    $W.GL.clearColor(0.9, 0.9, 0.9, 1.0);
+    $W.camera.setPosition(0,0,3);
+
     return true;
 }
 function render() {
-	 glBegin($W.GL.TRIANGLES);
-                 glVertex3f(-0.5,-0.5,0.0);
-                 glVertex3f(0.5,0.0,0.0);
-                 glVertex3f(0.0,0.5,0.0);
-         glEnd();
 
+	glPushMatrix();
+	
+	glPushMatrix();
+	glScalef(1.0,2.0,1.0);
+	glColor3f(1,0,0);
+	glBegin($W.GL.TRIANGLES);
+	glVertex3f(-1*2/2,2/2,0);
+	glVertex3f(-1*2/2,-1*2/2,0);
+	glVertex3f(2/2,2/2,0);
+	glVertex3f(2/2,2/2,0);
+	glVertex3f(-1*2/2,-1*2/2,0);
+	glVertex3f(2/2,-1*2/2,0);
+	glEnd();
+	glPopMatrix();
+	
+	glTranslatef(1.25,2,0.0);
+	glRotatef(15,0,0,1);
+	
+	glPushMatrix();
+	glTranslatef(0,-1,0.0);
+	glScalef(0.25,1.0,0.25);
+	glBegin($W.GL.TRIANGLES);
+	glColor3f(0,1,0);
+	glVertex3f(-1*2/2,2/2,0);
+	glVertex3f(-1*2/2,-1*2/2,0);
+	glVertex3f(2/2,2/2,0);
+	glVertex3f(2/2,2/2,0);
+	glVertex3f(-1*2/2,-1*2/2,0);
+	glVertex3f(2/2,-1*2/2,0);
+	glEnd();
+	glPopMatrix();
+	
+	glTranslatef(0,-2,0);
+	glRotatef(-30,0,0,1);
+	glTranslatef(0,-1,0);
+	glScalef(0.25,1.0,0.0);
+	
+	glBegin($W.GL.TRIANGLES);
+	glColor3f(0,0,1);
+	glVertex3f(-1*2/2,2/2,0);
+	glVertex3f(-1*2/2,-1*2/2,0);
+	glVertex3f(2/2,2/2,0);
+	
+	glVertex3f(2/2,2/2,0);
+	glVertex3f(-1*2/2,-1*2/2,0);
+	glVertex3f(2/2,-1*2/2,0);
+	glEnd();
+	
+	glPopMatrix();
+	
 }
 
 function start() {
@@ -30,8 +79,8 @@ function start() {
 	 init(); 
 	 glutDisplayFunc(render);
          $W.update = function() {
+         	
                 document.getElementById('overlay').innerHTML = $W.FPS;
-
          };
          $W.start()
         
@@ -53,4 +102,3 @@ function start() {
 
 </body>
 </html>
-

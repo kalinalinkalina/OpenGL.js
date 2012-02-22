@@ -12,6 +12,17 @@ var GLUT_MULTISAMPLE = 128;
 var GLUT_STEREO = 256;
 var GLUT_LUMINANCE = 512; 
 
+var GL_POINTS=                         0x0000;
+var GL_LINES=                          0x0001;
+var GL_LINE_LOOP=                      0x0002;
+var GL_LINE_STRIP=                     0x0003;
+var GL_TRIANGLES=                      0x0004;
+var GL_TRIANGLE_STRIP=                 0x0005;
+var GL_TRIANGLE_FAN=                   0x0006;
+var GL_QUADS=                          0x0007;
+var GL_QUAD_STRIP=                     0x0008;
+var GL_POLYGON=                        0x0009;
+
 /** GLUT inter-file variables */
 __glutDisplayMode = GLUT_RGB | GLUT_SINGLE | GLUT_DEPTH; 
 function glBegin(model)

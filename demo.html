@@ -27,7 +27,7 @@ function render() {
 	glPushMatrix();
 	glScalef(1.0,2.0,1.0);
 	glColor3f(1,0,0);
-	glBegin($W.GL.TRIANGLES);
+	glBegin(GL_TRIANGLES);
 	glVertex3f(-1*2/2,2/2,0);
 	glVertex3f(-1*2/2,-1*2/2,0);
 	glVertex3f(2/2,2/2,0);
@@ -43,7 +43,7 @@ function render() {
 	glPushMatrix();
 	glTranslatef(0,-1,0.0);
 	glScalef(0.25,1.0,0.25);
-	glBegin($W.GL.TRIANGLES);
+	glBegin(GL_TRIANGLES);
 	glColor3f(0,1,0);
 	glVertex3f(-1*2/2,2/2,0);
 	glVertex3f(-1*2/2,-1*2/2,0);
@@ -59,7 +59,7 @@ function render() {
 	glTranslatef(0,-1,0);
 	glScalef(0.25,1.0,0.0);
 	
-	glBegin($W.GL.TRIANGLES);
+	glBegin(GL_TRIANGLES);
 	glColor3f(0,0,1);
 	glVertex3f(-1*2/2,2/2,0);
 	glVertex3f(-1*2/2,-1*2/2,0);

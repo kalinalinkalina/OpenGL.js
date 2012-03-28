@@ -45,7 +45,7 @@ function glVertex3f(x,y,z)
 	var outVec4 = mat4VectProduct($W.matrixStacks.getActiveMatrix(),inVec4);
 	$W.pipeline_vertex.unshift(outVec4.x,outVec4.y,outVec4.z);
 	$W.pipeline_color.unshift($W.pipeline_color_state);
-	if($W.pipeline_state== $W.GL.TRIANGLES)
+	if($W.pipeline_state==GL_TRIANGLES)
 	{
 		$W.pipeline_index.push($W.pipeline_indexCount);
 		$W.pipeline_indexCount += 1;
@@ -67,7 +67,7 @@ function glEnd()
 	 index_data.push($W.pipeline_index);
 
 	 DATA.push(vertex_data,color_data,index_data);
-	 $W.createObject({type:$W.pipeline_state, data:DATA});
+	 createObject({type:$W.pipeline_state, data:DATA});
 }
 function glutSolidCube(width)
 {
@@ -90,7 +90,10 @@ function glutInitWindowSize(width, height)
 
 function glutInit()
 {
+
 	if (!$W.initialize()) 
 	{return false;}
 	return true;	
+
 }
+

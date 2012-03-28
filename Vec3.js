@@ -2,7 +2,7 @@ function Vec3()
 {
 	this.x;this.y;this.z;
 	this.dim = 3;
-	
+
 }
 Vec3.prototype.length = function()
 {

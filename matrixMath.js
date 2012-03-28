@@ -32,7 +32,7 @@ function mat4VectProduct(A, b){
 	for(var i=0, k=0; i<4; i++, k+=4)
 		for(var j=0; j<4; j++)
 			resultArray[i] += aArray[k+j]*bArray[j];
-	
+
 	result.getFromArray(resultArray);
 	return result;
 }

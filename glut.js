@@ -24,7 +24,8 @@ var GL_QUAD_STRIP=                     0x0008;
 var GL_POLYGON=                        0x0009;
 
 /** GLUT inter-file variables */
-__glutDisplayMode = GLUT_RGB | GLUT_SINGLE | GLUT_DEPTH; 
+
+Mode = GLUT_RGB | GLUT_SINGLE | GLUT_DEPTH; 
 function glBegin(model)
 {
 	$W.pipeline_state = model;
@@ -40,7 +41,8 @@ function glColor3f(r,g,b)
 }
 function glVertex3f(x,y,z)	
 {
-	var inVec4 = new Vec4();
+	//Previously with WebGLU we did this. Left in for reference.
+	/*var inVec4 = new Vec4();
 	inVec4.getFromArray([x,y,z,1]);
 	var outVec4 = mat4VectProduct($W.matrixStacks.getActiveMatrix(),inVec4);
 	$W.pipeline_vertex.unshift(outVec4.x,outVec4.y,outVec4.z);
@@ -49,11 +51,50 @@ function glVertex3f(x,y,z)
 	{
 		$W.pipeline_index.push($W.pipeline_indexCount);
 		$W.pipeline_indexCount += 1;
-	}
+	}*/
+	
+	$W.pipeline_vertex.push([x,y,z,1]);
+	if($W.pipeline_color.length==0)
+		$W.pipeline_color.push($W.pipeline_color_state);
 }
 function glEnd()
 {
-	DATA = [];
+	//Set up buffer and read coordinates
+	var aspect = canvas.width / canvas.height;
+				
+	var vertices = new Float32Array($W.pipeline_vertex.length*$W.pipeline_vertex[0].length);
+	
+	for(i=0, k=0; i<$W.pipeline_vertex.length; i++){
+		for(j=0; j<$W.pipeline_vertex[0].length-1; j++, k++){
+			vertices[k] = aspect*$W.pipeline_vertex[i][j];
+			//document.write(vertickes[k]);
+		}
+	}
+				
+	vbuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, vbuffer);					
+	gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+				
+	itemSize = 3; //dimension? in which case, $W.pipeline_vertex[0].length-1;
+	numItems = vertices.length / itemSize;
+
+	//Setting uniforms and attributes
+	gl.useProgram(program); 
+
+	var fourcolor = [$W.pipeline_color[0][0],$W.pipeline_color[0][1],$W.pipeline_color[0][2], 1.0];
+	program.uColor = gl.getUniformLocation(program, "uColor");
+	gl.uniform4fv(program.uColor, fourcolor);
+
+	program.aVertexPosition = gl.getAttribLocation(program, "aVertexPosition");
+	gl.enableVertexAttribArray(program.aVertexPosition);
+	gl.vertexAttribPointer(program.aVertexPosition, itemSize, gl.FLOAT, false, 0, 0);
+
+	//Drawing
+	gl.drawArrays(gl.TRIANGLES, 0, numItems);
+
+
+	//Using WebGLU, we did this... Left in for reference.
+	/*DATA = [];
 	 vertex_data = [];
 	 vertex_data.push("vertex");
 	 vertex_data.push($W.pipeline_vertex);
@@ -67,12 +108,9 @@ function glEnd()
 	 index_data.push($W.pipeline_index);
 
 	 DATA.push(vertex_data,color_data,index_data);
-	 createObject({type:$W.pipeline_state, data:DATA});
+	 createObject({type:$W.pipeline_state, data:DATA});*/  
 }
-function glutSolidCube(width)
-{
 
-}
 /** OpenGL functions */
 glutInitDisplayMode = function(mode) {
 	__glutDisplayMode = mode; //This doesnt do anything yet.
@@ -90,10 +128,38 @@ function glutInitWindowSize(width, height)
 
 function glutInit()
 {
+	//Get the WebGL context from the canvas element
+	canvas = document.getElementById("canvas");
+	gl = canvas.getContext("experimental-webgl");
+	
+	//Defining the viewport and setting default color
+	gl.viewport(0,0,canvas.width, canvas.height);
+	gl.clearColor(0.9,0.9,0.9,1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	
+	//Compiling and linking shaders
+	var v = document.getElementById("vertex").firstChild.nodeValue;
+	var f = document.getElementById("fragment").firstChild.nodeValue;
+	var vs = gl.createShader(gl.VERTEX_SHADER);
+	gl.shaderSource(vs, v);
+	gl.compileShader(vs);
+	var fs = gl.createShader(gl.FRAGMENT_SHADER);
+	gl.shaderSource(fs, f);
+	gl.compileShader(fs);
+	program = gl.createProgram();
+	gl.attachShader(program, vs);
+	gl.attachShader(program, fs);
+	gl.linkProgram(program);
 
-	if (!$W.initialize()) 
-	{return false;}
-	return true;	
+	//Debugging shaders
+	if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) 
+		console.log(gl.getShaderInfoLog(vs));
+					
+	if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) 
+		console.log(gl.getShaderInfoLog(fs));
+				
+	if (!gl.getProgramParameter(program, gl.LINK_STATUS)) 
+		console.log(gl.getProgramInfoLog(program));
 
+	//rest of setup in glEnd
 }
-

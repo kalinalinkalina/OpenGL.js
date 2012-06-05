@@ -28,45 +28,45 @@ var GL_POLYGON=                        0x0009;
 Mode = GLUT_RGB | GLUT_SINGLE | GLUT_DEPTH; 
 function glBegin(model)
 {
-	$W.pipeline_state = model;
-	$W.pipeline_index = [];
-	$W.pipeline_color =[];
-	$W.pipeline_indexCount = 0;
-	$W.pipeline_color_state =[1,0,0];
-	$W.pipeline_vertex = [];
+	pipeline_state = model;
+	pipeline_index = [];
+	pipeline_color =[];
+	pipeline_indexCount = 0;
+	pipeline_color_state =[1,0,0];
+	pipeline_vertex = [];
 }
 function glColor3f(r,g,b)
 {
-	$W.pipeline_color_state =[r,g,b];
+	pipeline_color_state =[r,g,b];
 }
 function glVertex3f(x,y,z)	
 {
 	//Previously with WebGLU we did this. Left in for reference.
 	/*var inVec4 = new Vec4();
 	inVec4.getFromArray([x,y,z,1]);
-	var outVec4 = mat4VectProduct($W.matrixStacks.getActiveMatrix(),inVec4);
-	$W.pipeline_vertex.unshift(outVec4.x,outVec4.y,outVec4.z);
-	$W.pipeline_color.unshift($W.pipeline_color_state);
-	if($W.pipeline_state==GL_TRIANGLES)
+	var outVec4 = mat4VectProduct(matrixStacks.getActiveMatrix(),inVec4);
+	pipeline_vertex.unshift(outVec4.x,outVec4.y,outVec4.z);
+	pipeline_color.unshift(pipeline_color_state);
+	if(pipeline_state==GL_TRIANGLES)
 	{
-		$W.pipeline_index.push($W.pipeline_indexCount);
-		$W.pipeline_indexCount += 1;
+		pipeline_index.push(pipeline_indexCount);
+		pipeline_indexCount += 1;
 	}*/
 	
-	$W.pipeline_vertex.push([x,y,z,1]);
-	if($W.pipeline_color.length==0)
-		$W.pipeline_color.push($W.pipeline_color_state);
+	pipeline_vertex.push([x,y,z,1]);
+	if(pipeline_color.length==0)
+		pipeline_color.push(pipeline_color_state);
 }
 function glEnd()
 {
 	//Set up buffer and read coordinates
 	var aspect = canvas.width / canvas.height;
 				
-	var vertices = new Float32Array($W.pipeline_vertex.length*$W.pipeline_vertex[0].length);
+	var vertices = new Float32Array(pipeline_vertex.length*pipeline_vertex[0].length);
 	
-	for(i=0, k=0; i<$W.pipeline_vertex.length; i++){
-		for(j=0; j<$W.pipeline_vertex[0].length-1; j++, k++){
-			vertices[k] = aspect*$W.pipeline_vertex[i][j];
+	for(i=0, k=0; i<pipeline_vertex.length; i++){
+		for(j=0; j<pipeline_vertex[0].length-1; j++, k++){
+			vertices[k] = aspect*pipeline_vertex[i][j];
 			//document.write(vertickes[k]);
 		}
 	}
@@ -75,13 +75,13 @@ function glEnd()
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbuffer);					
 	gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 				
-	itemSize = 3; //dimension? in which case, $W.pipeline_vertex[0].length-1;
+	itemSize = 3; //dimension? in which case, pipeline_vertex[0].length-1;
 	numItems = vertices.length / itemSize;
 
 	//Setting uniforms and attributes
 	gl.useProgram(program); 
 
-	var fourcolor = [$W.pipeline_color[0][0],$W.pipeline_color[0][1],$W.pipeline_color[0][2], 1.0];
+	var fourcolor = [pipeline_color[0][0],pipeline_color[0][1],pipeline_color[0][2], 1.0];
 	program.uColor = gl.getUniformLocation(program, "uColor");
 	gl.uniform4fv(program.uColor, fourcolor);
 
@@ -97,18 +97,18 @@ function glEnd()
 	/*DATA = [];
 	 vertex_data = [];
 	 vertex_data.push("vertex");
-	 vertex_data.push($W.pipeline_vertex);
+	 vertex_data.push(pipeline_vertex);
 
 	 color_data = [];
 	 color_data.push("color");
-	 color_data.push($W.pipeline_color);
+	 color_data.push(pipeline_color);
 
 	 index_data = [];
 	 index_data.push('wglu_elements');
-	 index_data.push($W.pipeline_index);
+	 index_data.push(pipeline_index);
 
 	 DATA.push(vertex_data,color_data,index_data);
-	 createObject({type:$W.pipeline_state, data:DATA});*/  
+	 createObject({type:pipeline_state, data:DATA});*/  
 }
 
 /** OpenGL functions */

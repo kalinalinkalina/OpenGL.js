@@ -1,18 +1,15 @@
-//enum 
-var GL_MODELVIEW = 0; 
-var GL_PROJECTION = 1;
-var GL_TEXTURE = 2;
-var GL_COLOR = 3;
+var GL_MODELVIEW = 0; //stack is 32
+var GL_PROJECTION = 1; //stack is 2
+var GL_TEXTURE = 2; //stack is 2
+var GL_COLOR = 3; //stack is 2
 
-//Object to contain state information of the four main matrix stacks in OpenGL
-$W.MatrixStackObject=function()
+MatrixStackObject=function()
 {
-	
-	this.matrixStackIndex = [0,0,0,0];//each stack has its own corresponding index
+	this.matrixStackIndex = [0,0,0,0];
 	this.matrixStacks = [new Array(), new Array(), new Array(), new Array()];
-	this.matrixMode = 0;//intialize to model_view
+	this.matrixMode = 0;
 
-	//initialize the first matrix  of each stack to the identity
+	//init
 	console.log(IdentityMat4);
 	for(var i = 0;i<4;i++)
 	{
@@ -21,25 +18,23 @@ $W.MatrixStackObject=function()
 		this.matrixStacks[i].push(IdentityMat4);
 	}
 
-	//Returns the matrix stack that is currently being modified
+
 	this.getActiveStack = function()
 	{
 		return this.matrixStacks[this.matrixMode];
 	}
-	//Returns the current index for the active stack
 	this.getActiveIndex = function()
 	{
 		return this.matrixStackIndex[this.matrixMode];
 	}
 
-	//Increases the size of the active stack
+
 	this.pushMatrix = function()
 	{
 		this.getActiveStack().push(this.getActiveMatrix().clone());
 		this.matrixStackIndex[this.matrixMode] += 1;		
 
 	}
-	//Reduces the size of the active stack
 	this.popMatrix = function()
 	{
 		//Don't decrease if it's already at zero
@@ -48,18 +43,15 @@ $W.MatrixStackObject=function()
 		this.getActiveStack().pop();
 	}
 
-	//Sets the argument as the matrix in the current index of the active matrix stack
 	this.setActiveMatrix = function(matrix)
 	{
 		this.getActiveStack()[this.getActiveIndex()] = matrix;
 	}
-	//Returns the matrix in the current index of the active matrix stack
 	this.getActiveMatrix = function()
 	{
 		return this.getActiveStack()[this.getActiveIndex()];
 	}
 
-	//The following functions return the the matrix from the corresponding current index for each matrix stack
 	this.getModelView = function()
 	{
 		return this.matrixStacks[0][this.matrixStackIndex[0]];
@@ -78,39 +70,34 @@ $W.MatrixStackObject=function()
 	}
 }
 
-//Initialize the matrix stacks in the main $W object
-$W.matrixStacks = new $W.MatrixStackObject();
+matrixStacks = new MatrixStackObject();
 
-
-//The following functions are pretty straightforward.
-//The OpenGL function calls here are mostly just wrappers around function calls that will specifically modify the main matrixStacks object in $W.
-//There should, in fact, only ever need to be one instance of MatrixStackObject.
 
 function glMatrixMode(mode)
 {
-	$W.matrixStacks.matrixMode = mode;
+	matrixStacks.matrixMode = mode;
 }
 
 function glPushMatrix(){
-	$W.matrixStacks.pushMatrix();
+	matrixStacks.pushMatrix();
 }
 
 
 function glPopMatrix(){
-	$W.matrixStacks.popMatrix();
+	matrixStacks.popMatrix();
 }
 
 function glLoadIdentity(){
-	$W.matrixStacks.getActiveMatrix().loadIdentity();
+	matrixStacks.getActiveMatrix().loadIdentity();
 }
 
 function glLoadMatrix(m){
-	$W.matrixStacks.setActiveMatrix(m);
+	matrixStacks.setActiveMatrix(m);
 }
 
 function glMultMatrix(m){
-	var newMatrix = mat4Product($W.matrixStacks.getActiveMatrix(),m);
-	$W.matrixStacks.setActiveMatrix(newMatrix);
+	var newMatrix = mat4Product(matrixStacks.getActiveMatrix(),m);
+	matrixStacks.setActiveMatrix(newMatrix);
 }
 
 function glTranslatef(x,y,z)
@@ -120,7 +107,7 @@ function glTranslatef(x,y,z)
 			     0,1,0,y, 
 			     0,0,1,z, 
 			     0,0,0,1]);
-	console.log($W.matrixStacks.getActiveMatrix());
+	console.log(matrixStacks.getActiveMatrix());
 	glMultMatrix(matrix);
 }
 

@@ -15,4 +15,4 @@ Implementation Notes
 Bugs
 ---
 
-1) glDrawArrays is giving an "Attempted to access out-of-range indices" error.  Not sure why yet.
+1) gluLookAt seems to have broken, though it was working before... Also, glPush and glPop are not working properly.

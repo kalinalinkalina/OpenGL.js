@@ -1,114 +1,90 @@
 var GL_MODELVIEW = 0; //stack is 32
 var GL_PROJECTION = 1; //stack is 2
 var GL_TEXTURE = 2; //stack is 2
-var GL_COLOR = 3; //stack is 2
+var GL_COLOR = 4; //stack is 2
 
-MatrixStackObject=function()
-{
+MatrixStackObject=function(){
 	this.matrixStackIndex = [0,0,0,0];
-	this.matrixStacks = [new Array(), new Array(), new Array(), new Array()];
+	this.matrixStacks = [new Array(32), new Array(2), new Array(2), new Array(2)];
 	this.matrixMode = 0;
-
+	
 	//init
+	var IdentityMat4 = new Mat4();
+	IdentityMat4.loadIdentity();
 	console.log(IdentityMat4);
 	for(var i = 0;i<4;i++)
-	{
-		var IdentityMat4 = new Mat4();
-		IdentityMat4.loadIdentity();
-		this.matrixStacks[i].push(IdentityMat4);
-	}
-
-
-	this.getActiveStack = function()
-	{
+		this.matrixStacks[i][0]=(IdentityMat4.clone());
+	
+	this.getActiveStack = function(){
 		return this.matrixStacks[this.matrixMode];
 	}
-	this.getActiveIndex = function()
-	{
+	
+	this.getActiveIndex = function(){
 		return this.matrixStackIndex[this.matrixMode];
 	}
 
-
-	this.pushMatrix = function()
-	{
-		this.getActiveStack().push(this.getActiveMatrix().clone());
-		this.matrixStackIndex[this.matrixMode] += 1;		
-
+	this.increaseActiveIndex = function(){
+		this.matrixStackIndex[this.matrixMode] += 1;
 	}
-	this.popMatrix = function()
-	{
+	
+	this.decreaseActiveIndex = function(){
 		//Don't decrease if it's already at zero
 		if (this.matrixStackIndex[this.matrixMode] == 0) return;
 		this.matrixStackIndex[this.matrixMode] -= 1;
-		this.getActiveStack().pop();
 	}
 
-	this.setActiveMatrix = function(matrix)
-	{
+	this.setActiveMatrix = function(matrix){
 		this.getActiveStack()[this.getActiveIndex()] = matrix;
 	}
-	this.getActiveMatrix = function()
-	{
+	
+	this.getActiveMatrix = function(){
 		return this.getActiveStack()[this.getActiveIndex()];
 	}
-
-	this.getModelView = function()
-	{
+	
+	this.getModelView = function(){
 		return this.matrixStacks[0][this.matrixStackIndex[0]];
 	}	
-	this.getProjection = function()
-	{
+	
+	this.getProjection = function(){
 		return this.matrixStacks[1][this.matrixStackIndex[1]];
 	}
-	this.getTexture = function()
-	{
+	
+	this.getTexture = function(){
 		return this.matrixStacks[2][this.matrixStackIndex[2]];
 	}
-	this.getColor = function()
-	{
+	
+	this.getColor = function(){
 		return this.matrixStacks[3][this.matrixStackIndex[3]];
 	}
 }
 
 matrixStacks = new MatrixStackObject();
 
-
-function glMatrixMode(mode)
-{
+function glMatrixMode(mode){
 	matrixStacks.matrixMode = mode;
 }
 
 function glPushMatrix(){
-	matrixStacks.pushMatrix();
+	var copyMatrix = matrixStacks.getActiveMatrix();
+	matrixStacks.increaseActiveIndex();
+	matrixStacks.setActiveMatrix(copyMatrix);
+	//matrixStackIndex[matrixMode]++;
+	//copyMatrix( matrixModeStack[matrixMode][MatrixStackIndex[matrixMode]-1],
+	//	matrixModeStack[matrixMode][MatrixStackIndex[matrixMode]] );
 }
 
 
 function glPopMatrix(){
-	matrixStacks.popMatrix();
+	matrixStacks.decreaseActiveIndex();
+	//matrixStackIndex[matrixMode]--;
 }
 
-function glLoadIdentity(){
-	matrixStacks.getActiveMatrix().loadIdentity();
-}
-
-function glLoadMatrix(m){
-	matrixStacks.setActiveMatrix(m);
-}
-
-function glMultMatrix(m){
-	var newMatrix = mat4Product(matrixStacks.getActiveMatrix(),m);
-	matrixStacks.setActiveMatrix(newMatrix);
-}
-
-function glTranslatef(x,y,z)
-{
+function glTranslatef(x,y,z){
 	var matrix =new Mat4();
-	matrix.getFromArray([1,0,0,x, 
-			     0,1,0,y, 
-			     0,0,1,z, 
-			     0,0,0,1]);
+	matrix.getFromArray([1,0,0,x, 0,1,0,y, 0,0,1,z, 0,0,0,1]);
 	console.log(matrixStacks.getActiveMatrix());
 	glMultMatrix(matrix);
+	//matrixModeStack[matrixMode][matrixStackIndex[matrixMode]] = matrixProduct(matrixModeStack[matrixMode][matrixStackIndex[matrixMode]], matrix);
 }
 
 function glRotatef(angle,x,y,z){
@@ -120,27 +96,26 @@ function glRotatef(angle,x,y,z){
 	var c = Math.cos(degree);
 	var ac = 1 - c;
 	var s = Math.sin(degree);
-
+	
 	rtMatrix.m00 = axis.x * axis.x * ac + c;
 	rtMatrix.m01 = axis.x * axis.y * ac - axis.z * s;
 	rtMatrix.m02 = axis.x * axis.z * ac + axis.y * s;
 	rtMatrix.m03 = 0;
-
+		
 	rtMatrix.m10 = axis.y * axis.x * ac + axis.z * s;
 	rtMatrix.m11 = axis.y * axis.y * ac + c;
 	rtMatrix.m12 = axis.y * axis.z * ac - axis.x * s;
 	rtMatrix.m13 = 0;
-
+		
 	rtMatrix.m20 = axis.z * axis.x * ac - axis.y * s;
 	rtMatrix.m21 = axis.z * axis.y * ac + axis.x * s;
 	rtMatrix.m22 = axis.z * axis.z * ac + c;
 	rtMatrix.m23 = 0;
-
+		
 	rtMatrix.m30 = 0;
 	rtMatrix.m31 = 0;
 	rtMatrix.m32 = 0;
 	rtMatrix.m33 = 1;		
-
 	glMultMatrix(rtMatrix);
 }
 
@@ -151,38 +126,6 @@ function glScalef(x,y,z){
 				  0,0,z,0,
 				  0,0,0,1]);
 	glMultMatrix(scaleMatrix);
-}
-
-function glFrustum(left,right,bottom,top,near,far){
-	var oneone = (2*near)/(right - left);
-	var twotwo = (2*near)/(top - bottom);
-	var A = (right + left)/(right-left);
-	var B = (top + bottom)/(top - bottom);
-	var C = (far + near)/(far - near);
-	var D = (2*far*near)/(far - near);
-
-	var matrix = new Mat4();
-	matrix.getFromArray([oneone,  	  0, A, 0,
-			     0	   , twotwo, B, 0,
-			     0	   , 	  0, C, D,
-			     0	   ,      0,-1, 0]);
-	glMultMatrix(matrix);
-}
-
-function glOrtho(left,right,bottom,top,near,far){
-	var oneone = 2 / (right - left);
-	var twotwo = 2 / (top - bottom);
-	var threethree = -2 / (far - near);
-	var tx = (right + left)/(right - left);
-	var ty = (top + bottom)/(top - bottom);
-	var tz = (far + near)/(far - near);
-
-	var matrix = new Mat4();
-	matrix.getFromArray([oneone, 0     , 0	       , tx,
-			     0	   , twotwo, 0	       , ty,
-			     0	   ,	  0, threethree, tz,
-			     0	   ,	  0, 	       ,  1]);
-	glMultMatrix(matrix);
 }
 
 function gluLookAt(eyeX,eyeY,eyeZ, centerX,centerY,centerZ, upX,upY,upZ){
@@ -211,9 +154,31 @@ function gluLookAt(eyeX,eyeY,eyeZ, centerX,centerY,centerZ, upX,upY,upZ){
 	glMultMatrix(matrix);
 }
 
-function glViewport(x,y,width,height){
+function glDepthRange(near,far){
 
 }
-function glDepthRange(near,far){
+
+function glFrustum(left,right,bottom,top,near,far){
+
+}
+
+function glLoadIdentity(){
+	matrixStacks.getActiveMatrix().loadIdentity();
+}
+
+function glLoadMatrix(m){
+	matrixStacks.setActiveMatrix(m);
+}
+
+function glMultMatrix(m){
+	var newMatrix = mat4Product(matrixStacks.getActiveMatrix(),m);
+	matrixStacks.setActiveMatrix(newMatrix);
+}
+
+function glOrtho(left,right,bottom,top,near,far){
+
+}
+
+function glViewport(x,y,width,height){
 
 }

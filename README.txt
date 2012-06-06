@@ -1,10 +1,10 @@
 3D Javascript Engine using OpenGL
 ---
 
+Newest working demo: http://borkiew1.github.com/
 
-The newest working demo:
-http://sliu45.projects.cs.illinois.edu/demo.html
-The code used in DEMO is from "Hierarchical Modeling" slides of CS418,by John C. Hart, UIUC.
+Sicheng's demo: http://sliu45.projects.cs.illinois.edu/demo.html
+The code is from "Hierarchical Modeling" slides of CS418, by John Hart, UIUC.
 
 Implementation Notes
 ---

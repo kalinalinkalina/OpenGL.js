@@ -42,12 +42,12 @@ function init() {
 }
 function render() {
 
-	gluLookAt(0,-1,1, 0,0,0, 0,1,0);
-	/*
-	glPushMatrix();
+	gluLookAt(0,0,1, 0,0,0, 0,1,0);
 	
 	glPushMatrix();
-	glScalef(1.0,2.0,1.0);
+	
+	//glPushMatrix();
+	glScalef(0.25,0.5,0.25);
 	glColor3f(1,0,0);
 	glBegin(GL_TRIANGLES);
 		glVertex3f(-1,1,0);
@@ -57,12 +57,12 @@ function render() {
 		glVertex3f(-1,-1,0);
 		glVertex3f(1,-1,0);
 	glEnd();
-	glPopMatrix();
+	//glPopMatrix();
 	
 	glTranslatef(1.25,2,0.0);
 	glRotatef(15,0,0,1);
 	
-	glPushMatrix();
+	//glPushMatrix();
 	glTranslatef(0,-1,0.0);
 	glScalef(0.25,1.0,0.25);
 	glBegin(GL_TRIANGLES);
@@ -74,7 +74,7 @@ function render() {
 		glVertex3f(-1,-1,0);
 		glVertex3f(1,-1,0);
 	glEnd();
-	glPopMatrix();
+	//glPopMatrix();
 	
 	glTranslatef(0,-2,0);
 	glRotatef(-30,0,0,1);
@@ -90,30 +90,6 @@ function render() {
 		glVertex3f(1,-1,0);
 	glEnd();
 	
-	glPopMatrix();*/
-	
-	glPushMatrix();
-	glBegin(GL_TRIANGLES);
-	glColor3f(1,0,0);
-	glVertex3f(-0.5,0.5,0);
-	glVertex3f(-0.5,-0.5,0);
-	glVertex3f(0.5,0.5,0);
-	glVertex3f(0.5,0.5,0);
-	glVertex3f(-0.5,-0.5,0);
-	glVertex3f(0.5,-0.5,0);
-	glEnd();
-	glPopMatrix();
-
-	glPushMatrix();
-	glBegin(GL_TRIANGLES);
-	glColor3f(0,1,0);
-	glVertex3f(-0.25,0.25,0);
-	glVertex3f(-0.25,-0.25,0);
-	glVertex3f(0.25,0.25,0);
-	glVertex3f(0.25,0.25,0);
-	glVertex3f(-0.25,-0.25,0);
-	glVertex3f(0.25,-0.25,0);
-	glEnd();
 	glPopMatrix();
 	
 }

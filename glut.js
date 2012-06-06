@@ -24,7 +24,6 @@ var GL_QUAD_STRIP=                     0x0008;
 var GL_POLYGON=                        0x0009;
 
 /** GLUT inter-file variables */
-
 Mode = GLUT_RGB | GLUT_SINGLE | GLUT_DEPTH; 
 function glBegin(model)
 {
@@ -41,74 +40,42 @@ function glColor3f(r,g,b)
 }
 function glVertex3f(x,y,z)	
 {
-	//Previously with WebGLU we did this. Left in for reference.
-	/*var inVec4 = new Vec4();
+	var inVec4 = new Vec4();
 	inVec4.getFromArray([x,y,z,1]);
 	var outVec4 = mat4VectProduct(matrixStacks.getActiveMatrix(),inVec4);
-	pipeline_vertex.unshift(outVec4.x,outVec4.y,outVec4.z);
-	pipeline_color.unshift(pipeline_color_state);
-	if(pipeline_state==GL_TRIANGLES)
+	//document.write(outVec4.x+" "+outVec4.y+" "+outVec4.z+" "+outVec4.w+" ");
+	pipeline_vertex.unshift(outVec4.x,outVec4.y,outVec4.z,outVec4.w);
+	if(pipeline_color.length==0) //so, this only works for one color per shape. TODO
+		pipeline_color.unshift(pipeline_color_state[0], pipeline_color_state[1], pipeline_color_state[2], 1);
+	if(pipeline_state== GL_TRIANGLES)
 	{
 		pipeline_index.push(pipeline_indexCount);
 		pipeline_indexCount += 1;
-	}*/
-	
-	pipeline_vertex.push([x,y,z,1]);
-	if(pipeline_color.length==0)
-		pipeline_color.push(pipeline_color_state);
+	}
 }
+
 function glEnd()
 {
 	//Set up buffer and read coordinates
 	var aspect = canvas.width / canvas.height;
-				
-	var vertices = new Float32Array(pipeline_vertex.length*pipeline_vertex[0].length);
+	dimension = 4;
 	
-	for(i=0, k=0; i<pipeline_vertex.length; i++){
-		for(j=0; j<pipeline_vertex[0].length-1; j++, k++){
-			vertices[k] = aspect*pipeline_vertex[i][j];
-			//document.write(vertickes[k]);
-		}
-	}
-				
 	vbuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbuffer);					
-	gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-				
-	itemSize = 3; //dimension? in which case, pipeline_vertex[0].length-1;
-	numItems = vertices.length / itemSize;
+	gl.bufferData(gl.ARRAY_BUFFER, pipeline_vertex, gl.STATIC_DRAW);
 
 	//Setting uniforms and attributes
 	gl.useProgram(program); 
 
-	var fourcolor = [pipeline_color[0][0],pipeline_color[0][1],pipeline_color[0][2], 1.0];
 	program.uColor = gl.getUniformLocation(program, "uColor");
-	gl.uniform4fv(program.uColor, fourcolor);
+	gl.uniform4fv(program.uColor, pipeline_color);
 
 	program.aVertexPosition = gl.getAttribLocation(program, "aVertexPosition");
 	gl.enableVertexAttribArray(program.aVertexPosition);
-	gl.vertexAttribPointer(program.aVertexPosition, itemSize, gl.FLOAT, false, 0, 0);
+	gl.vertexAttribPointer(program.aVertexPosition, dimension, gl.FLOAT, false, 0, 0);
 
 	//Drawing
-	gl.drawArrays(gl.TRIANGLES, 0, numItems);
-
-
-	//Using WebGLU, we did this... Left in for reference.
-	/*DATA = [];
-	 vertex_data = [];
-	 vertex_data.push("vertex");
-	 vertex_data.push(pipeline_vertex);
-
-	 color_data = [];
-	 color_data.push("color");
-	 color_data.push(pipeline_color);
-
-	 index_data = [];
-	 index_data.push('wglu_elements');
-	 index_data.push(pipeline_index);
-
-	 DATA.push(vertex_data,color_data,index_data);
-	 createObject({type:pipeline_state, data:DATA});*/  
+	gl.drawArrays(gl.TRIANGLES, 0, pipeline_indexCount);
 }
 
 /** OpenGL functions */

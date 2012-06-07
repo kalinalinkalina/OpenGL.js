@@ -39,16 +39,23 @@ function glEnd(){
 }
 
 function glVertex3f(x,y,z){
-	var inVec4 = new Vec4();
-	inVec4.getFromArray([x,y,z,1]);
-	var outVec4 = mat4VectProduct(matrixStacks.getActiveMatrix(),inVec4);
-	//document.write(outVec4.x+" "+outVec4.y+" "+outVec4.z+" "+outVec4.w+" ");
-	pipeline_vertex.unshift(outVec4.x,outVec4.y,outVec4.z, outVec4.w);
-	if(pipeline_color.length==0) //so, this only works for one color per shape. TODO
-		pipeline_color.unshift(pipeline_color_state[0], pipeline_color_state[1], pipeline_color_state[2], 1);
-	if(pipeline_state== GL_TRIANGLES)
-	{
-		//pipeline_index.push(pipeline_indexCount); //What is this line for?
+	switch(pipeline_state){
+	
+	case GL_TRIANGLES:
+		var inVec4 = new Vec4();
+		inVec4.getFromArray([x,y,z,1]);
+		var outVec4 = mat4VectProduct(matrixStacks.getActiveMatrix(),inVec4);
+		//document.write(outVec4.x+" "+outVec4.y+" "+outVec4.z+" "+outVec4.w+" ");
+		pipeline_vertex.unshift(outVec4.x,outVec4.y,outVec4.z, outVec4.w);
+		if(pipeline_color.length==0) //so, this only works for one color per shape. TODO
+			pipeline_color.unshift(pipeline_color_state[0], pipeline_color_state[1], pipeline_color_state[2], 1);
 		pipeline_indexCount += 1;
+		break;
+		
+	case GL_TRIANGLE_STRIP:
+		break;
+		
+	case GL_TRIANGLE_FAN:
+		break;
 	}
 }

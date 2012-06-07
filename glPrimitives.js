@@ -20,9 +20,6 @@ function glBegin(mode){
 
 function glEnd(){
 	//Set up buffer and read coordinates
-	var aspect = canvas.width / canvas.height;
-	dimension = 4;
-	
 	vbuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbuffer);					
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(pipeline_vertex), gl.DYNAMIC_DRAW);

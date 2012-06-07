@@ -62,6 +62,7 @@ function glutInit(){
 				
 	if (!gl.getProgramParameter(program, gl.LINK_STATUS)) 
 		console.log(gl.getProgramInfoLog(program));
-
-	//rest of setup in glEnd
+	
+	var aspect = canvas.width / canvas.height;
+	dimension = 4;
 }

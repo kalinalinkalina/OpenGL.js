@@ -35,27 +35,38 @@ function glEnd(){
 	gl.vertexAttribPointer(program.aVertexPosition, dimension, gl.FLOAT, false, 0, 0);
 
 	//Drawing
-	gl.drawArrays(gl.TRIANGLES, 0, pipeline_indexCount);
+	switch(pipeline_state){
+		case GL_POINTS:
+			gl.drawArrays(gl.POINTS, 0, pipeline_indexCount);
+		break;
+		case GL_LINES:
+			gl.drawArrays(gl.LINES, 0, pipeline_indexCount);
+		break;
+		case GL_LINE_LOOP:
+			gl.drawArrays(gl.LINE_LOOP, 0, pipeline_indexCount);
+		break;
+		case GL_LINE_STRIP:
+			gl.drawArrays(gl.LINE_STRIP, 0, pipeline_indexCount);
+		break;
+		case GL_TRIANGLES:
+			gl.drawArrays(gl.TRIANGLES, 0, pipeline_indexCount);
+		break;
+		case GL_TRIANGLE_STRIP:
+			gl.drawArrays(gl.TRIANGLE_STRIP, 0, pipeline_indexCount);
+		break;
+		case GL_TRIANGLE_FAN:
+			gl.drawArrays(gl.TRIANGLE_FAN, 0, pipeline_indexCount);
+		break;
+	}
 }
 
 function glVertex3f(x,y,z){
-	switch(pipeline_state){
-	
-	case GL_TRIANGLES:
-		var inVec4 = new Vec4();
-		inVec4.getFromArray([x,y,z,1]);
-		var outVec4 = mat4VectProduct(matrixStacks.getActiveMatrix(),inVec4);
-		//document.write(outVec4.x+" "+outVec4.y+" "+outVec4.z+" "+outVec4.w+" ");
-		pipeline_vertex.unshift(outVec4.x,outVec4.y,outVec4.z, outVec4.w);
-		if(pipeline_color.length==0) //so, this only works for one color per shape. TODO
-			pipeline_color.unshift(pipeline_color_state[0], pipeline_color_state[1], pipeline_color_state[2], 1);
-		pipeline_indexCount += 1;
-		break;
-		
-	case GL_TRIANGLE_STRIP:
-		break;
-		
-	case GL_TRIANGLE_FAN:
-		break;
-	}
+	var inVec4 = new Vec4();
+	inVec4.getFromArray([x,y,z,1]);
+	var outVec4 = mat4VectProduct(matrixStacks.getActiveMatrix(),inVec4);
+	//document.write(outVec4.x+" "+outVec4.y+" "+outVec4.z+" "+outVec4.w+" ");
+	pipeline_vertex.unshift(outVec4.x,outVec4.y,outVec4.z, outVec4.w);
+	if(pipeline_color.length==0) //so, this only works for one color per shape. TODO
+		pipeline_color.unshift(pipeline_color_state[0], pipeline_color_state[1], pipeline_color_state[2], 1);
+	pipeline_indexCount += 1;
 }

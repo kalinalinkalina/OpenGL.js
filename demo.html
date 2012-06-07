@@ -48,28 +48,24 @@ function render() {
 	gluLookAt(0,0,1, 0,0,0, 0,1,0);
 	
 	glPushMatrix();
-	
+
 	glPushMatrix();
-	glScalef(0.25,0.5,0.25);
+	//TRIANGLE
+	glScalef(0.5,0.5,0);
 	glBegin(GL_TRIANGLES);
 		glColor3f(1,0,0);
-		glVertex3f(-1,1,0);
-		glVertex3f(-1,-1,0);
-		glVertex3f(1,1,0);
-		glVertex3f(1,1,0);
-		glVertex3f(-1,-1,0);
 		glVertex3f(1,-1,0);
+		glVertex3f(0,1,0);
+		glVertex3f(-1,-1,0);
 	glEnd();
 	glPopMatrix();
-	
-	glTranslatef(0.25,0.5,0.0);
-	glRotatef(15,0,0,1);
 	
 	glPushMatrix();
-	glTranslatef(0,-0.25,0);
-	glScalef(0.0625,0.25,0.0625);
+	//TOP BAR
+	glTranslatef(0.45,0.5,0);
+	glScalef(1/2,1/16,0);
 	glBegin(GL_TRIANGLES);
-		glColor3f(0,1,0);
+		glColor3f(0.5,0.5,0.5);
 		glVertex3f(-1,1,0);
 		glVertex3f(-1,-1,0);
 		glVertex3f(1,1,0);
@@ -79,12 +75,12 @@ function render() {
 	glEnd();
 	glPopMatrix();
 	
-	glTranslatef(0,-0.5,0);
-	glRotatef(-30,0,0,1);
-	glTranslatef(0,-0.25,0);
-	glScalef(0.0625,0.25,0.0);
+	glPushMatrix();
+	//BOTTOM BAR
+	glTranslatef(0.7,-0.5,0);
+	glScalef(1/4,1/16,0);
 	glBegin(GL_TRIANGLES);
-		glColor3f(0,0,1);
+		glColor3f(0.5,0.5,0.5);
 		glVertex3f(-1,1,0);
 		glVertex3f(-1,-1,0);
 		glVertex3f(1,1,0);
@@ -92,8 +88,159 @@ function render() {
 		glVertex3f(-1,-1,0);
 		glVertex3f(1,-1,0);
 	glEnd();
+	glPopMatrix();
+	
+	glPushMatrix();
+	//WALL
+	glTranslatef(15/16,0,0);
+	glScalef(1/64,1,0);
+	glBegin(GL_TRIANGLES);
+		glColor3f(0,0,0);
+		glVertex3f(-1,1,0);
+		glVertex3f(-1,-1,0);
+		glVertex3f(1,1,0);
+		glVertex3f(1,1,0);
+		glVertex3f(-1,-1,0);
+		glVertex3f(1,-1,0);
+	glEnd();
+	glPopMatrix();
+	
+	glPushMatrix();
+		glPushMatrix();
+			//TOP "CIRCLE"
+			glTranslatef(0,1/2,0);
+			glScalef(1/16,1/16,0);
+			glRotatef(45,0,0,1);
+			glBegin(GL_TRIANGLES);
+				glColor3f(1,0,0);
+				
+				glVertex3f(-1,-1,0);
+				glVertex3f(-1,-.5,0);
+				glVertex3f(-.5,-.5,0);
+				glVertex3f(-.5,-.5,0);
+				glVertex3f(-1,-1,0);
+				glVertex3f(-.5,-1,0);
+				
+				glVertex3f(-.5,-1,0);
+				glVertex3f(-.5,-.5,0);
+				glVertex3f(.5,-.5,0);
+				glVertex3f(.5,-.5,0);
+				glVertex3f(-.5,-1,0);
+				glVertex3f(.5,-1,0);
+				
+				glVertex3f(.5,-1,0);
+				glVertex3f(.5,-.5,0);
+				glVertex3f(1,-.5,0);
+				glVertex3f(1,-.5,0);
+				glVertex3f(.5,-1,0);
+				glVertex3f(1,-1,0);
+				
+				glVertex3f(.5,-.5,0);
+				glVertex3f(1,-.5,0);
+				glVertex3f(1,.5,0);
+				glVertex3f(1,.5,0);
+				glVertex3f(.5,-.5,0);
+				glVertex3f(.5,.5,0);
+				
+				glVertex3f(.5,.5,0);
+				glVertex3f(1,.5,0);
+				glVertex3f(1,1,0);
+				glVertex3f(1,1,0);
+				glVertex3f(.5,.5,0);
+				glVertex3f(.5,1,0);
+				
+				glVertex3f(.5,1,0);
+				glVertex3f(.5,.5,0);
+				glVertex3f(-.5,.5,0);
+				glVertex3f(-.5,.5,0);
+				glVertex3f(.5,1,0);
+				glVertex3f(-.5,1,0);
+				
+				glVertex3f(-.5,1,0);
+				glVertex3f(-1,1,0);
+				glVertex3f(-1,.5,0);
+				glVertex3f(-1,.5,0);
+				glVertex3f(-.5,1,0);
+				glVertex3f(-.5,.5,0);
+				
+				glVertex3f(-.5,.5,0);
+				glVertex3f(-1,.5,0);
+				glVertex3f(-1,-.5,0);
+				glVertex3f(-1,-.5,0);
+				glVertex3f(-.5,.5,0);
+				glVertex3f(-.5,-.5,0);
+			glEnd();
+		glPopMatrix();
+	
+		glPushMatrix();
+			//BOTTOM "CIRCLE"
+			glTranslatef(0.5,-0.5,0);
+			glScalef(1/16,1/16,0);
+			glRotatef(45,0,0,1);
+			glBegin(GL_TRIANGLES);
+				glColor3f(1,0,0);
+				
+				glVertex3f(-1,-1,0);
+				glVertex3f(-1,-.5,0);
+				glVertex3f(-.5,-.5,0);
+				glVertex3f(-.5,-.5,0);
+				glVertex3f(-1,-1,0);
+				glVertex3f(-.5,-1,0);
+				
+				glVertex3f(-.5,-1,0);
+				glVertex3f(-.5,-.5,0);
+				glVertex3f(.5,-.5,0);
+				glVertex3f(.5,-.5,0);
+				glVertex3f(-.5,-1,0);
+				glVertex3f(.5,-1,0);
+				
+				glVertex3f(.5,-1,0);
+				glVertex3f(.5,-.5,0);
+				glVertex3f(1,-.5,0);
+				glVertex3f(1,-.5,0);
+				glVertex3f(.5,-1,0);
+				glVertex3f(1,-1,0);
+				
+				glVertex3f(.5,-.5,0);
+				glVertex3f(1,-.5,0);
+				glVertex3f(1,.5,0);
+				glVertex3f(1,.5,0);
+				glVertex3f(.5,-.5,0);
+				glVertex3f(.5,.5,0);
+				
+				glVertex3f(.5,.5,0);
+				glVertex3f(1,.5,0);
+				glVertex3f(1,1,0);
+				glVertex3f(1,1,0);
+				glVertex3f(.5,.5,0);
+				glVertex3f(.5,1,0);
+				
+				glVertex3f(.5,1,0);
+				glVertex3f(.5,.5,0);
+				glVertex3f(-.5,.5,0);
+				glVertex3f(-.5,.5,0);
+				glVertex3f(.5,1,0);
+				glVertex3f(-.5,1,0);
+				
+				glVertex3f(-.5,1,0);
+				glVertex3f(-1,1,0);
+				glVertex3f(-1,.5,0);
+				glVertex3f(-1,.5,0);
+				glVertex3f(-.5,1,0);
+				glVertex3f(-.5,.5,0);
+				
+				glVertex3f(-.5,.5,0);
+				glVertex3f(-1,.5,0);
+				glVertex3f(-1,-.5,0);
+				glVertex3f(-1,-.5,0);
+				glVertex3f(-.5,.5,0);
+				glVertex3f(-.5,-.5,0);
+			glEnd();
+		glPopMatrix();
+	glPopMatrix();
 	
 	glPopMatrix();
+	
 	
 }
 

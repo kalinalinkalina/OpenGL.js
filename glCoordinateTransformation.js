@@ -128,40 +128,6 @@ function glScalef(x,y,z){
 	glMultMatrix(scaleMatrix);
 }
 
-function gluLookAt(eyeX,eyeY,eyeZ, centerX,centerY,centerZ, upX,upY,upZ){
-	var L = new Vec3();//L = center - eye
-	L.x = centerX - eyeX;
-	L.y = centerY + eyeY;
-	L.z = centerZ - eyeZ;
-	L.normalize();
-
-	var S = new Vec3();//S = L x up
-	S.x = (L.y * upZ) - (L.z * upY);
-	S.y = (L.z * upX) - (L.x * upZ);
-	S.z = (L.x * upY) - (L.y * upX);
-	S.normalize();
-
-	var U = new Vec3();//U = S x L
-	U.x = (S.y * L.z) - (S.z * L.y);
-	U.y = (S.z * L.x) - (S.x * L.z);
-	U.z = (S.x * L.y) - (S.y * L.x);
-
-	var matrix = new Mat4();
-	matrix.getFromArray([S.x, U.x, -L.x, -eyeX,
-			     S.y, U.y, -L.y, -eyeY,
-			     S.z, U.z, -L.z, -eyeZ,
-			     0  ,   0,    0,     1]);
-	glMultMatrix(matrix);
-}
-
-function glDepthRange(near,far){
-
-}
-
-function glFrustum(left,right,bottom,top,near,far){
-
-}
-
 function glLoadIdentity(){
 	matrixStacks.getActiveMatrix().loadIdentity();
 }
@@ -173,12 +139,4 @@ function glLoadMatrix(m){
 function glMultMatrix(m){
 	var newMatrix = mat4Product(matrixStacks.getActiveMatrix(),m);
 	matrixStacks.setActiveMatrix(newMatrix);
-}
-
-function glOrtho(left,right,bottom,top,near,far){
-
-}
-
-function glViewport(x,y,width,height){
-
 }

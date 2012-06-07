@@ -34,7 +34,7 @@ var GL_UNPACK_ALIGNMENT = UNPACK_ALIGNMENT;
 var GL_PACK_ALIGNMENT = PACK_ALIGNMENT;
 
 
-
+//All of this is probably wrong/not up to date with other changes in code elsewhere... Kept for reference.
 
 function glActiveTexture(texture) //OpenGLES?
 {

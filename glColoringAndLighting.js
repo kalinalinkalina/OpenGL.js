@@ -1,0 +1,1 @@
+function glColor3f(r,g,b){	pipeline_color_state =[r,g,b];}

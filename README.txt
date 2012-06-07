@@ -20,4 +20,4 @@ Implementation Notes
 Bugs
 ---
 
-1) gluLookAt seems to have broken, though it was working before... Also, glPush and glPop are not working properly.
+1) gluLookAt doesn't work properly.  Possible fix: Implement GL_PROJECTION matrix stack.

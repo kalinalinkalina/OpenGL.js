@@ -7,6 +7,7 @@
 
 <script type="text/javascript" src="glPrimitives.js"></script>
 <script type="text/javascript" src="glColoringAndLighting.js"></script>
+<script type="text/javascript" src="glFrameBufferOperations.js"></script>
 <script type="text/javascript" src="glut.js"></script>
 <script type="text/javascript" src="glu.js"></script>
 <script type="text/javascript" src="Mat4.js"></script>
@@ -40,6 +41,8 @@ function init() {
     <!--Initialize WebGL-->
     glutInit();
     glutInitWindowSize(500, 500);
+	glClearColor(0.9,0.9,0.9,1);
+	glClear(GL_COLOR_BUFFER_BIT);
 
     return true;
 }

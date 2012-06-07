@@ -36,8 +36,6 @@ function glutInit(){
 	
 	//Defining the viewport and setting default color
 	gl.viewport(0,0,canvas.width, canvas.height);
-	gl.clearColor(0.9,0.9,0.9,1);
-	gl.clear(gl.COLOR_BUFFER_BIT);
 	
 	//Compiling and linking shaders
 	var v = document.getElementById("vertex").firstChild.nodeValue;

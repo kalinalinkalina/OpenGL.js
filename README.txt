@@ -14,8 +14,7 @@ The code is from "Hierarchical Modeling" slides of CS418, by John Hart, UIUC.
 Implementation Notes
 ---
 
-1) Objects written earlier into the program will be drawn after objects written later.  (This is important for overlapping objects.)
-2) Can only have one color per glBegin() and glEnd() block, and must be specified after glBegin().
+1) Can only have one color per glBegin() and glEnd() block, and must be specified after glBegin().
 
 
 Bugs

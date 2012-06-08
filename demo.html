@@ -36,9 +36,8 @@ void main(){
 </script>
 
 <script type="application/x-javascript">
-function init() {
 
-    <!--Initialize WebGL-->
+function init() {
     glutInit();
     glutInitWindowSize(500, 500);
 	glClearColor(0.9,0.9,0.9,1);
@@ -65,7 +64,7 @@ function render() {
 	
 	glPushMatrix();
 	//TOP BAR
-	glTranslatef(0.43,0.5,0);
+	glTranslatef(0.44,0.5,0);
 	glScalef(1/2,1/16,0);
 	glBegin(GL_TRIANGLES);
 		glColor3f(0.5,0.5,0.5);
@@ -80,7 +79,7 @@ function render() {
 	
 	glPushMatrix();
 	//BOTTOM BAR
-	glTranslatef(0.68,-0.5,0);
+	glTranslatef(0.69,-0.5,0);
 	glScalef(1/4,1/16,0);
 	glBegin(GL_TRIANGLES);
 		glColor3f(0.5,0.5,0.5);
@@ -96,15 +95,10 @@ function render() {
 	glPushMatrix();
 	//WALL
 	glTranslatef(15/16,0,0);
-	glScalef(1/64,1,0);
-	glBegin(GL_TRIANGLES);
+	glBegin(GL_LINES);
 		glColor3f(0,0,0);
-		glVertex3f(-1,1,0);
-		glVertex3f(-1,-1,0);
-		glVertex3f(1,1,0);
-		glVertex3f(1,1,0);
-		glVertex3f(-1,-1,0);
-		glVertex3f(1,-1,0);
+		glVertex3f(0,-1,0);
+		glVertex3f(0,1,0);
 	glEnd();
 	glPopMatrix();
 	

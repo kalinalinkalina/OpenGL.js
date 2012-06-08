@@ -37,31 +37,23 @@ void main(){
 
 <script type="application/x-javascript">
 
-function init() {
-    glutInit();
-    glutInitWindowSize(500, 500);
-	glClearColor(0.9,0.9,0.9,1);
-	glClear(GL_COLOR_BUFFER_BIT);
+var nFPS = 60;
+var fRotateAngle = 0;
 
+function init() {
+	glClearColor(0.9,0.9,0.9,1);
     return true;
 }
 function render() {
+
+	glClear(GL_COLOR_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
 	gluLookAt(0,0,1, 0,0,0, 0,1,0); //eye center up
 	
 	glPushMatrix();
 
-	glPushMatrix();
-	//TRIANGLE
-	glScalef(0.5,0.5,0);
-	glBegin(GL_TRIANGLES);
-		glColor3f(1,0,0);
-		glVertex3f(1,-1,0);
-		glVertex3f(0,1,0);
-		glVertex3f(-1,-1,0);
-	glEnd();
-	glPopMatrix();
-	
 	glPushMatrix();
 	//TOP BAR
 	glTranslatef(0.44,0.5,0);
@@ -102,6 +94,20 @@ function render() {
 	glEnd();
 	glPopMatrix();
 	
+	glTranslatef(0,1/2,0);
+	glRotatef(fRotateAngle,0,0,1); //animation
+	glTranslatef(0,-1/2,0);
+	glPushMatrix();
+	//TRIANGLE
+	glScalef(0.5,0.5,0);
+	glBegin(GL_TRIANGLES);
+		glColor3f(1,0,0);
+		glVertex3f(1,-1,0);
+		glVertex3f(0,1,0);
+		glVertex3f(-1,-1,0);
+	glEnd();
+	glPopMatrix();
+	
 	glPushMatrix();
 		glPushMatrix();
 			//TOP CIRCLE
@@ -134,9 +140,18 @@ function render() {
 	glPopMatrix();
 }
 
+function timer(v){
+	fRotateAngle += 1;
+	glutPostRedisplay(); // trigger render function by sending redraw into message queue
+	glutTimerFunc(1000/nFPS,timer,v); // restart timer again
+}
+
 function start() {
-	 init(); 
-	 glutDisplayFunc(render);
+	glutInit();
+    glutInitWindowSize(500, 500);
+	init(); 
+	glutDisplayFunc(render);
+	glutTimerFunc(100,timer,nFPS);
 }
 
 </script>

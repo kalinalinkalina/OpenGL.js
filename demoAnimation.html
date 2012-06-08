@@ -65,7 +65,8 @@ function render() {
 }
 
 function timer(v){
-	fRotateAngle += 1;
+	//fRotateAngle += 1;
+	fRotateAngle += Math.sin(fRotateAngle+1);
 	glutPostRedisplay(); // trigger render function by sending redraw into message queue
 	glutTimerFunc(1000/nFPS,timer,v); // restart timer again
 }

@@ -39,6 +39,7 @@ void main(){
 
 var nFPS = 60;
 var fRotateAngle = 0;
+var fRotateCounter = 0;
 
 function init() {
 	glClearColor(0.9,0.9,0.9,1);
@@ -123,7 +124,7 @@ function render() {
 			glEnd();
 		glPopMatrix();
 	
-		glPushMatrix();
+		/*glPushMatrix();
 			//BOTTOM CIRCLE
 			glTranslatef(0.5,-0.5,0);
 			glScalef(1/8,1/8,0);
@@ -134,14 +135,16 @@ function render() {
 					glVertex3f(Math.sin(angle)*radius, Math.cos(angle)*radius, 0);
 				}
 			glEnd();
-		glPopMatrix();
+		glPopMatrix();*/
 	glPopMatrix();
 	
 	glPopMatrix();
 }
 
 function timer(v){
-	fRotateAngle += 1;
+	//fRotateAngle += 1;
+	fRotateCounter +=.02;
+	fRotateAngle = 60*Math.sin(fRotateCounter);
 	glutPostRedisplay(); // trigger render function by sending redraw into message queue
 	glutTimerFunc(1000/nFPS,timer,v); // restart timer again
 }

@@ -37,49 +37,65 @@ void main(){
 
 <script type="application/x-javascript">
 function init() {
-
-    <!--Initialize WebGL-->
-    glutInit();
-    glutInitWindowSize(500, 500);
 	glClearColor(0.3,0.3,0.3,1);
-
     return true;
 }
 function render() {
 	var nFPS = 60;
 	var fRotateAngle = 0;
 
-	// put your OpenGL display commands here
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	
-	// reset OpenGL transformation matrix
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity(); // reset transformation matrix to identity
+	glLoadIdentity();
 
-	// setup look at transformation so that 
-	// eye is at : (0,0,3)
-	// look at center is at : (0,0,0)
-	// up direction is +y axis
 	gluLookAt(0,0,1, 0,0,0, 0,1,0);
 	glRotatef(fRotateAngle,0,1,0);
 
-	// Test drawing a solid teapot
-	glColor3f(1.0,0.0,0.0); // set current color to Red
-	//glutSolidTeapot(1.f); // call glut utility to draw a solid teapot
+	glColor3f(1.0,0.0,0.0);
+
 	glBegin(GL_TRIANGLES);
                  glVertex3f(-0.5,-0.5,0.0);
                  glVertex3f(0.5,0.0,0.0);
                  glVertex3f(0.0,0.5,0.0);
         glEnd();
 	
-	//glFlush();
 	//glutSwapBuffers();	// swap front/back framebuffer to avoid flickering 
 	
 }
 
+function reshape (w,h){
+
+	glViewport(0, 0, w, h);
+	var fAspect = w/h; 
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(70,fAspect,0.001,30); 
+}
+
+
+function timer(v){
+	fRotateAngle += 1;
+	//glutPostRedisplay(); // trigger display function by sending redraw into message queue
+	//glutTimerFunc(1000/nFPS,timer,v); // restart timer again
+}
+
 function start() {
-	 init(); 
-	 glutDisplayFunc(render);
+	glutInit(); 
+
+	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); //this doesn't do anything yet
+	glutInitWindowSize (500, 500); 
+
+	init();
+	
+
+	glutDisplayFunc(render);
+	//glutTimerFunc(100,timer,nFPS); // a periodic timer. Usually used for updating animation
+	
+	//glutMainLoop(); // start the main message-callback loop
+
+	return 0;
 }
 
 </script>

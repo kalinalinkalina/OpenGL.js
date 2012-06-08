@@ -36,14 +36,14 @@ void main(){
 </script>
 
 <script type="application/x-javascript">
+var nFPS = 60;
+var fRotateAngle = 0;
+
 function init() {
 	glClearColor(0.3,0.3,0.3,1);
     return true;
 }
 function render() {
-	var nFPS = 60;
-	var fRotateAngle = 0;
-
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	
 	glMatrixMode(GL_MODELVIEW);
@@ -60,38 +60,26 @@ function render() {
                  glVertex3f(0.0,0.5,0.0);
         glEnd();
 	
-	//glutSwapBuffers();	// swap front/back framebuffer to avoid flickering 
+	glutSwapBuffers();	//not needed
 	
 }
 
-function reshape (w,h){
-
-	glViewport(0, 0, w, h);
-	var fAspect = w/h; 
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(70,fAspect,0.001,30); 
-}
-
-
 function timer(v){
 	fRotateAngle += 1;
-	//glutPostRedisplay(); // trigger display function by sending redraw into message queue
-	//glutTimerFunc(1000/nFPS,timer,v); // restart timer again
+	glutPostRedisplay(); // trigger render function by sending redraw into message queue
+	glutTimerFunc(1000/nFPS,timer,v); // restart timer again
 }
 
 function start() {
 	glutInit(); 
-
+	
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); //this doesn't do anything yet
 	glutInitWindowSize (500, 500); 
 
 	init();
 	
-
 	glutDisplayFunc(render);
-	//glutTimerFunc(100,timer,nFPS); // a periodic timer. Usually used for updating animation
+	glutTimerFunc(100,timer,nFPS); // a periodic timer. Usually used for updating animation
 	
 	//glutMainLoop(); // start the main message-callback loop
 

@@ -17,9 +17,16 @@ function gluLookAt(eyeX,eyeY,eyeZ, centerX,centerY,centerZ, upX,upY,upZ){
 	U.z = (S.x * L.y) - (S.y * L.x);
 
 	var matrix = new Mat4();
-	matrix.getFromArray([S.x, U.x, -L.x, -eyeX,
+	/*matrix.getFromArray([S.x, U.x, -L.x, -eyeX,
 			     S.y, U.y, -L.y, -eyeY,
 			     S.z, U.z, -L.z, -eyeZ,
 			     0  ,   0,    0,     1]);
+	*/
+	matrix.getFromArray([S.x, S.y, S.z, 0,
+			     U.x, U.y, U.z, 0,
+			     -L.x, -L.y, -L.z, 0,
+			     0  ,   0,    0,     1]);
+	
 	glMultMatrix(matrix);
+	//glTranslatef(-eyeX,-eyeY,-eyeZ);
 }

@@ -64,3 +64,16 @@ function glutInit(){
 	var aspect = canvas.width / canvas.height;
 	dimension = 4;
 }
+
+function glutSwapBuffers(){
+	//this happens automatically with WebGL, so function not needed!
+}
+
+function glutTimerFunc(msecs, func, value){
+	setTimeout(function() {func(value);},msecs);
+}
+
+function glutPostRedisplay(){
+	//this is wrong but works for now
+	render();
+}
